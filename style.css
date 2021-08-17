@@ -110,3 +110,49 @@ nav {
   font-size: 4.5rem;
   font-weight: 400;
 }
+
+/* MOVEMENTS */
+.movements {
+  grid-column: 1 / 2;
+  grid-row: 2 / span 3;
+  background-color: #fff;
+  border-radius: 1rem;
+  overflow: scroll;
+}
+
+.movement__row {
+  display: flex;
+  align-items: center;
+  padding: 2.25rem 4rem;
+  border-bottom: 1px solid #eee;
+}
+
+.movement__type {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #fff;
+  text-transform: uppercase;
+  border-radius: 10rem;
+  padding: 0.1rem 1rem;
+  margin-right: 2rem;
+}
+
+.movement__type--deposit {
+  background: linear-gradient(to left top, #39b385, #9be15d);
+}
+
+.movement__type--withdrawal {
+  background: linear-gradient(to left top, #e52a5a, #ff585f);
+}
+
+.movement__date {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #666;
+  text-transform: uppercase;
+}
+
+.movement__value {
+  font-size: 1.7rem;
+  margin-left: auto;
+}
