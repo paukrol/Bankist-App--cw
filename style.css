@@ -1,0 +1,76 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+html {
+  font-size: 62.5%;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  color: #444;
+  background-color: #f3f3f3;
+  padding: 2rem;
+  height: 100vh;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2rem;
+}
+
+.welcome {
+  font-size: 1.9rem;
+  font-weight: 500;
+}
+
+.logo {
+  height: 5.25rem;
+}
+
+.login {
+  display: flex;
+}
+
+.login__input {
+  width: 12rem;
+  text-align: center;
+  font-size: 1.6rem;
+  font-family: inherit;
+  padding: 0.5rem 2rem;
+  border: none;
+  margin-right: 1rem;
+  border-radius: 10rem;
+  color: inherit;
+  border: 1px solid #fff;
+  transition: all 0.3s;
+}
+
+.login__input::placeholder {
+  color: #bbb;
+}
+
+.login__input:focus {
+  outline: none;
+  border: 1px solid #ccc;
+}
+
+.login__btn {
+  border: none;
+  background: none;
+  font-size: 2.2rem;
+  color: inherit;
+  cursor: pointer;
+  transition: all 0.3;
+}
+
+.login__btn:focus,
+.login__btn:hover {
+  outline: none;
+  color: #777;
+}
