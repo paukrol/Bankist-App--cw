@@ -87,4 +87,11 @@ const creatUsernames = function (accs) {
 };
 
 creatUsernames(accounts);
-console.log(accounts);
+
+const calcPrintBalance = function (movements) {
+  const balance = movements.reduce((acc, mov) => acc + mov);
+
+  labelBalance.textContent = `${balance}€`;
+};
+
+calcPrintBalance(account1.movements);
