@@ -74,8 +74,6 @@ const displayMovements = function (movements) {
   });
 };
 
-displayMovements(account1.movements);
-
 const creatUsernames = function (accs) {
   accs.forEach(acc => {
     acc.username = acc.owner
@@ -85,7 +83,6 @@ const creatUsernames = function (accs) {
       .join('');
   });
 };
-
 creatUsernames(accounts);
 
 const calcPrintBalance = function (movements) {
@@ -94,30 +91,59 @@ const calcPrintBalance = function (movements) {
   labelBalance.textContent = `${balance}€`;
 };
 
-calcPrintBalance(account1.movements);
-
-const calcPrintSummary = function (movements) {
-  const incomes = movements
+const calcPrintSummary = function (acc) {
+  const incomes = acc.movements
     .filter(mov => mov > 0)
     .reduce((acc, cur) => acc + cur, 0);
 
-  const out = movements
+  const out = acc.movements
     .filter(mov => mov < 0)
     .reduce((acc, cur) => acc + cur, 0);
 
-  const interest = movements
+  const interest = acc.movements
     .filter(mov => mov > 0)
-    .map(deposit => (deposit * 1.2) / 100)
+    .map(deposit => (deposit * acc.interestRate) / 100)
     .filter((int, i, arr) => {
-      console.log(arr);
+      // console.log(arr);
       return int >= 1;
     })
     .reduce((acc, int) => acc + int);
 
-  console.log(interest);
+  // console.log(interest);
   labelSumIn.textContent = `${incomes}€`;
   labelSumOut.textContent = `${Math.abs(out)}€`;
   labelSumInterest.textContent = `${interest}€`;
 };
 
-calcPrintSummary(account1.movements);
+// Event handler
+let currentAccount = 'hej';
+
+btnLogin.addEventListener('click', e => {
+  //
+  e.preventDefault();
+
+  currentAccount = accounts.find(
+    acc => acc.username === inputLoginUsername.value
+  );
+  if (currentAccount?.pin === Number(inputLoginPin.value)) {
+    // Display UI and welcome message
+    labelWelcome.textContent = `Welcome back, ${
+      currentAccount.owner.split(' ')[0]
+    }!`;
+
+    containerApp.style.opacity = '1';
+
+    // Clear input fields
+    inputLoginUsername.value = inputLoginPin.value = '';
+    inputLoginPin.blur();
+
+    // Display movements
+    displayMovements(currentAccount.movements);
+
+    // Display balance
+    calcPrintBalance(currentAccount.movements);
+
+    // Display summary
+    calcPrintSummary(currentAccount);
+  }
+});
