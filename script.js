@@ -177,3 +177,25 @@ btnTransfer.addEventListener('click', e => {
     inputTransferTo.blur();
   }
 });
+
+btnClose.addEventListener('click', e => {
+  e.preventDefault();
+
+  if (
+    inputCloseUsername.value === currentAccount.username &&
+    currentAccount.pin === Number(inputClosePin.value)
+  ) {
+    const index = accounts.findIndex(
+      acc => acc.username === currentAccount.value
+    );
+    // Delete account
+    accounts.splice(index, 1);
+
+    // Update UI
+    containerApp.style.opacity = '0';
+    labelWelcome.textContent = 'Log in to get started';
+  }
+
+  inputCloseUsername.value = inputClosePin.value = '';
+  inputClosePin.blur();
+});
