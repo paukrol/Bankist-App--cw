@@ -122,7 +122,7 @@ const watch = function (locale) {
     const options = {
       hour: 'numeric',
       minute: 'numeric',
-      second: 'numeric',
+      // second: 'numeric',
       day: 'numeric',
       month: 'numeric',
       year: 'numeric',
@@ -133,7 +133,7 @@ const watch = function (locale) {
       now
     );
 
-    console.log(locale);
+    // console.log(locale);
   };
 
   tick();
@@ -250,8 +250,37 @@ const updateUI = function (acc) {
   calcPrintSummary(acc);
 };
 
+const startLogOutTimer = function () {
+  const tick = function () {
+    const min = String(Math.trunc(time / 60)).padStart(2, 0);
+    const sec = String(time % 60).padStart(2, 0);
+
+    // In each call, print the remaining time to UI
+    labelTimer.textContent = `${min} : ${sec}`;
+
+    // When 0 seconds, stop timer and log out user
+    if (time === 0) {
+      clearInterval(timer);
+      labelWelcome.textContent = 'Log in to get started';
+      containerApp.style.opacity = 0;
+    }
+
+    // Decrease 1s
+    time--;
+  };
+
+  // Set time to 5 minutes
+  let time = 5 * 60;
+
+  // Call the timer every second
+  tick();
+  const timer = setInterval(tick, 1000);
+
+  return timer;
+};
+
 // Event handler
-let currentAccount, timerMain;
+let currentAccount, timerMain, timer;
 
 btnLogin.addEventListener('click', e => {
   //
@@ -284,6 +313,10 @@ btnLogin.addEventListener('click', e => {
     inputLoginUsername.value = inputLoginPin.value = '';
     inputLoginPin.blur();
 
+    // Added timer
+    if (timer) clearInterval(timer);
+    timer = startLogOutTimer();
+
     // Update UI
     updateUI(currentAccount);
   }
@@ -311,6 +344,10 @@ btnTransfer.addEventListener('click', e => {
     currentAccount.movementsDates.push(new Date().toISOString());
     receiverAcc.movementsDates.push(new Date().toISOString());
 
+    // Reset timer
+    clearInterval(timer);
+    timer = startLogOutTimer();
+
     // Update UI
     updateUI(currentAccount);
 
@@ -333,6 +370,10 @@ btnLoan.addEventListener('click', e => {
 
       // Add loan date
       currentAccount.movementsDates.push(new Date().toISOString());
+
+      // Reset timer
+      clearInterval(timer);
+      timer = startLogOutTimer();
 
       //Update UI
       updateUI(currentAccount);
