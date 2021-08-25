@@ -115,6 +115,32 @@ const inputClosePin = document.querySelector('.form__input--pin');
 
 // Functions
 
+const watch = function (locale) {
+  const tick = function () {
+    const now = new Date();
+
+    const options = {
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+      day: 'numeric',
+      month: 'numeric',
+      year: 'numeric',
+      // weekday: 'long',
+    };
+
+    labelData.textContent = new Intl.DateTimeFormat(locale, options).format(
+      now
+    );
+
+    console.log(locale);
+  };
+
+  tick();
+
+  return tick;
+};
+
 const formatMovementDate = (date, locale) => {
   const calcDaysPassed = (date1, date2) =>
     Math.round(Math.abs(date2 - date1) / (1000 * 60 * 60 * 24));
@@ -156,7 +182,7 @@ const displayMovements = function (acc, sort = false) {
 
     const date = new Date(acc.movementsDates[i]);
     const displayDate = formatMovementDate(date, acc.locale);
-    console.log(acc.locale);
+    // console.log(acc.locale);
 
     const formattedMov = formatCur(mov, acc.locale, acc.currency);
 
@@ -225,7 +251,7 @@ const updateUI = function (acc) {
 };
 
 // Event handler
-let currentAccount;
+let currentAccount, timerMain;
 
 btnLogin.addEventListener('click', e => {
   //
@@ -250,20 +276,9 @@ btnLogin.addEventListener('click', e => {
     // const hour = `${now.getHours()}`.padStart(2, 0);
     // const min = `${now.getMinutes()}`.padStart(2, 0);
 
-    const now = new Date();
-    const options = {
-      hour: 'numeric',
-      minute: 'numeric',
-      day: 'numeric',
-      month: 'numeric',
-      year: 'numeric',
-      // weekday: 'long',
-    };
-
-    labelData.textContent = new Intl.DateTimeFormat(
-      currentAccount.locale,
-      options
-    ).format(now);
+    watch(currentAccount.locale);
+    if (timerMain) clearInterval(timerMain);
+    timerMain = setInterval(watch, 1000, currentAccount.locale);
 
     // Clear input fields
     inputLoginUsername.value = inputLoginPin.value = '';
