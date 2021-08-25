@@ -19,6 +19,7 @@ const account1 = {
   ],
 
   locale: 'en-US',
+  currency: 'USD',
 };
 
 const account2 = {
@@ -39,6 +40,7 @@ const account2 = {
   ],
 
   locale: 'pl-PL',
+  currency: 'PLN',
 };
 
 const account3 = {
@@ -59,6 +61,7 @@ const account3 = {
   ],
 
   locale: 'es-MX',
+  currency: 'MXN',
 };
 
 const account4 = {
@@ -79,6 +82,7 @@ const account4 = {
   ],
 
   locale: 'hu-HU',
+  currency: 'HUF',
 };
 
 const accounts = [account1, account2, account3, account4];
@@ -133,6 +137,13 @@ const formatMovementDate = (date, locale) => {
   }
 };
 
+const formatCur = (value, locale, currency) => {
+  return new Intl.NumberFormat(locale, {
+    style: 'currency',
+    currency: currency,
+  }).format(value.toFixed(2));
+};
+
 const displayMovements = function (acc, sort = false) {
   containerMovements.innerHTML = '';
 
@@ -147,13 +158,15 @@ const displayMovements = function (acc, sort = false) {
     const displayDate = formatMovementDate(date, acc.locale);
     console.log(acc.locale);
 
+    const formattedMov = formatCur(mov, acc.locale, acc.currency);
+
     const html = `
     <div class="movement__row">
         <div class="movement__type movement__type--${type}">${
       i + 1
     } ${type}</div>
         <div class="movement__date">${displayDate}</div>
-        <div class="movement__value">${mov.toFixed(2)}€</div>
+        <div class="movement__value">${formattedMov}</div>
     </div>`;
 
     containerMovements.insertAdjacentHTML('afterbegin', html);
@@ -174,7 +187,7 @@ creatUsernames(accounts);
 const calcPrintBalance = function (acc) {
   acc.balance = acc.movements.reduce((acc, mov) => acc + mov);
 
-  labelBalance.textContent = `${acc.balance.toFixed(2)}€`;
+  labelBalance.textContent = formatCur(acc.balance, acc.locale, acc.currency);
 };
 
 const calcPrintSummary = function (acc) {
@@ -196,9 +209,9 @@ const calcPrintSummary = function (acc) {
     .reduce((acc, int) => acc + int);
 
   // console.log(interest);
-  labelSumIn.textContent = `${incomes.toFixed(2)}€`;
-  labelSumOut.textContent = `${Math.abs(out).toFixed(2)}€`;
-  labelSumInterest.textContent = `${interest.toFixed(2)}€`;
+  labelSumIn.textContent = formatCur(incomes, acc.locale, acc.currency);
+  labelSumOut.textContent = formatCur(Math.abs(out), acc.locale, acc.currency);
+  labelSumInterest.textContent = formatCur(interest, acc.locale, acc.currency);
 };
 
 const updateUI = function (acc) {
